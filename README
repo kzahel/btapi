@@ -1,0 +1,3 @@
+i simple utorrent/bittorrent api layer using tornado's iostream and 
+"gen" module
+requirements: latest tornado web
