@@ -16,7 +16,7 @@ import pdb
 class Response(object):
     def __init__(self, data, stream):
         data = native_str(data.decode("latin1"))
-        logging.info('got response headers %s' % data)
+        #logging.info('got response headers %s' % data)
         first_line, _, header_data = data.partition("\n")
         match = re.match("HTTP/1.[01] ([0-9]+)", first_line)
         assert match
@@ -104,10 +104,10 @@ class BTServer(object):
 
     @gen.engine
     def do_request(self, request, callback=None):
-        logging.info('gettin stream')
+        #logging.info('gettin stream')
         stream = yield gen.Task( self.get_stream )
-        logging.info('got stream %s' % stream)
-        logging.info('writing request: %s' % request.generate_headers())
+        #logging.info('got stream %s' % stream)
+        #logging.info('writing request: %s' % request.generate_headers())
         stream._current_request = request
         stream.write( request.generate_headers() )
         data = yield gen.Task( stream.read_until, b("\r\n\r\n") )
@@ -134,6 +134,7 @@ class BTServer(object):
         logging.info('get %s' % uri)
         request = self.create_request(uri)
         result = yield gen.Task(self.do_request, request)
+        logging.info('got %s, %s' % (uri, result.code))
         callback(result)
         
     @gen.engine
